@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>流程瘦身与核心流程图设计</title>
+    <title>Process Simplification & Core Flowchart Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -53,11 +53,11 @@
     </style>
 </head>
 <body class="bg-gray-50 font-sans text-neutral">
-    <!-- 顶部导航 -->
+    <!-- Top Navigation -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-bold text-primary">
-                <i class="fa fa-sitemap mr-2"></i>流程瘦身与核心流程图设计
+                <i class="fa fa-sitemap mr-2"></i>Process Simplification & Core Flowchart Design
             </h1>
             <div class="flex items-center space-x-4">
                 <div id="timer" class="bg-neutral text-white px-3 py-1 rounded-full font-mono">
@@ -70,252 +70,252 @@
         </div>
     </header>
 
-    <!-- 步骤导航 -->
+    <!-- Step Navigation -->
     <div class="container mx-auto px-4 py-6">
         <div class="flex flex-wrap justify-between items-center mb-8">
             <div class="flex items-center mb-4 md:mb-0">
                 <div id="step1" class="step-active w-10 h-10 rounded-full flex items-center justify-center border mr-2">1</div>
-                <span class="font-medium">查看复杂流程</span>
+                <span class="font-medium">View Complex Process</span>
             </div>
             <div class="flex items-center mb-4 md:mb-0">
                 <div id="step2" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 mr-2">2</div>
-                <span class="font-medium text-gray-500">流程瘦身操作</span>
+                <span class="font-medium text-gray-500">Process Simplification</span>
             </div>
             <div class="flex items-center">
                 <div id="step3" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-300 mr-2">3</div>
-                <span class="font-medium text-gray-500">绘制核心流程图</span>
+                <span class="font-medium text-gray-500">Create Core Flowchart</span>
             </div>
         </div>
 
-        <!-- 主内容区 -->
+        <!-- Main Content Area -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <!-- 步骤1：复杂流程展示 -->
+            <!-- Step 1: Display Complex Process -->
             <div id="step1Content" class="block">
                 <h2 class="text-xl font-bold mb-4 text-neutral flex items-center">
-                    <i class="fa fa-list-alt text-primary mr-2"></i>手动喂食复杂流程
+                    <i class="fa fa-list-alt text-primary mr-2"></i>Manual Feeding Complex Process
                 </h2>
                 <div class="bg-gray-50 p-6 rounded-lg border mb-6">
                     <ol class="list-decimal list-inside space-y-3 ml-4" id="complexProcess">
-                        <li class="process-item" data-keep="true">用户按喂食按钮</li>
-                        <li class="process-item" data-keep="false">系统确认按钮是否按下</li>
-                        <li class="process-item" data-keep="true">MCU 接收按钮信号</li>
-                        <li class="process-item" data-keep="true">电机启动</li>
-                        <li class="process-item" data-keep="false">每 0.3 秒测 1 次重量</li>
-                        <li class="process-item" data-keep="true">重量不够继续转</li>
-                        <li class="process-item" data-keep="false">再测</li>
-                        <li class="process-item" data-keep="true">够了电机停</li>
-                        <li class="process-item" data-keep="false">灯光亮提示</li>
-                        <li class="process-item" data-keep="true">记录喂食时间</li>
-                        <li class="process-item" data-keep="true">APP 推送"喂食成功"</li>
+                        <li class="process-item" data-keep="true">User presses the feeding button</li>
+                        <li class="process-item" data-keep="false">System confirms if the button is pressed</li>
+                        <li class="process-item" data-keep="true">MCU receives button signal</li>
+                        <li class="process-item" data-keep="true">Motor starts</li>
+                        <li class="process-item" data-keep="false">Weight measurement every 0.3 seconds</li>
+                        <li class="process-item" data-keep="true">Motor continues running if weight is insufficient</li>
+                        <li class="process-item" data-keep="false">Re-measure weight</li>
+                        <li class="process-item" data-keep="true">Motor stops when weight is sufficient</li>
+                        <li class="process-item" data-keep="false">Indicator light turns on for notification</li>
+                        <li class="process-item" data-keep="true">Record feeding time</li>
+                        <li class="process-item" data-keep="true">APP pushes "Feeding Successful" notification</li>
                     </ol>
                 </div>
                 
                 <div class="mb-4 p-4 bg-blue-50 border-l-4 border-primary rounded">
-                    <p class="text-sm"><i class="fa fa-info-circle mr-2"></i>请仔细阅读上述复杂流程，了解整个喂食系统的工作步骤。</p>
+                    <p class="text-sm"><i class="fa fa-info-circle mr-2"></i>Please read the complex process carefully to understand all working steps of the feeding system.</p>
                 </div>
                 
                 <div class="flex justify-end">
                     <button id="toStep2" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        开始流程瘦身 <i class="fa fa-arrow-right ml-1"></i>
+                        Start Process Simplification <i class="fa fa-arrow-right ml-1"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- 步骤2：流程瘦身操作 -->
+            <!-- Step 2: Process Simplification Operation -->
             <div id="step2Content" class="hidden">
                 <h2 class="text-xl font-bold mb-4 text-neutral flex items-center">
-                    <i class="fa fa-scissors text-accent mr-2"></i>流程瘦身操作
+                    <i class="fa fa-scissors text-accent mr-2"></i>Process Simplification Operation
                 </h2>
-                <p class="mb-4">请点击下方你认为是"无关细节"的步骤（需要划掉的部分）：</p>
+                <p class="mb-4">Click on the steps below that you consider "irrelevant details" (items to be crossed out):</p>
                 
                 <div class="bg-gray-50 p-6 rounded-lg border mb-6">
-                    <ol class="list-decimal list-inside space-y-3 ml-4" id="瘦身流程">
-                        <li class="process-item" data-keep="true">用户按喂食按钮</li>
-                        <li class="process-item" data-keep="false">系统确认按钮是否按下</li>
-                        <li class="process-item" data-keep="true">MCU 接收按钮信号</li>
-                        <li class="process-item" data-keep="true">电机启动</li>
-                        <li class="process-item" data-keep="false">每 0.3 秒测 1 次重量</li>
-                        <li class="process-item" data-keep="true">重量不够继续转</li>
-                        <li class="process-item" data-keep="false">再测</li>
-                        <li class="process-item" data-keep="true">够了电机停</li>
-                        <li class="process-item" data-keep="false">灯光亮提示</li>
-                        <li class="process-item" data-keep="true">记录喂食时间</li>
-                        <li class="process-item" data-keep="true">APP 推送"喂食成功"</li>
+                    <ol class="list-decimal list-inside space-y-3 ml-4" id="simplifiedProcess">
+                        <li class="process-item" data-keep="true">User presses the feeding button</li>
+                        <li class="process-item" data-keep="false">System confirms if the button is pressed</li>
+                        <li class="process-item" data-keep="true">MCU receives button signal</li>
+                        <li class="process-item" data-keep="true">Motor starts</li>
+                        <li class="process-item" data-keep="false">Weight measurement every 0.3 seconds</li>
+                        <li class="process-item" data-keep="true">Motor continues running if weight is insufficient</li>
+                        <li class="process-item" data-keep="false">Re-measure weight</li>
+                        <li class="process-item" data-keep="true">Motor stops when weight is sufficient</li>
+                        <li class="process-item" data-keep="false">Indicator light turns on for notification</li>
+                        <li class="process-item" data-keep="true">Record feeding time</li>
+                        <li class="process-item" data-keep="true">APP pushes "Feeding Successful" notification</li>
                     </ol>
                 </div>
                 
                 <div class="mb-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
-                    <p class="text-sm"><i class="fa fa-lightbulb-o mr-2"></i>提示：需要划掉的是"系统确认按钮、每 0.3 秒测、灯光提示"这些细节步骤。</p>
+                    <p class="text-sm"><i class="fa fa-lightbulb-o mr-2"></i>Tip: Items to be crossed out include "system confirms button press", "weight measurement every 0.3 seconds", and "indicator light notification".</p>
                 </div>
                 
                 <div class="flex justify-between">
                     <button id="backToStep1" class="border border-primary text-primary hover:bg-primary/5 px-6 py-2 rounded-lg transition-colors">
-                        <i class="fa fa-arrow-left mr-1"></i> 返回
+                        <i class="fa fa-arrow-left mr-1"></i> Back
                     </button>
                     <button id="toStep3" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        绘制核心流程图 <i class="fa fa-arrow-right ml-1"></i>
+                        Create Core Flowchart <i class="fa fa-arrow-right ml-1"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- 步骤3：绘制核心流程图 -->
+            <!-- Step 3: Create Core Flowchart -->
             <div id="step3Content" class="hidden">
                 <h2 class="text-xl font-bold mb-4 text-neutral flex items-center">
-                    <i class="fa fa-sitemap text-secondary mr-2"></i>绘制核心流程图
+                    <i class="fa fa-sitemap text-secondary mr-2"></i>Create Core Flowchart
                 </h2>
-                <p class="mb-4">请将下方的核心步骤拖放到流程图区域，并按顺序排列（指令输入→核心控制→执行送料→反馈确认）：</p>
+                <p class="mb-4">Drag the core steps below to the flowchart area and arrange them in order (Command Input → Core Control → Feeding Execution → Feedback Confirmation):</p>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- 左侧：可用节点 -->
+                    <!-- Left: Available Nodes -->
                     <div class="bg-gray-50 p-4 rounded-lg border">
-                        <h3 class="font-medium mb-3 text-center">核心步骤</h3>
+                        <h3 class="font-medium mb-3 text-center">Core Steps</h3>
                         <div class="space-y-3" id="availableNodes">
-                            <div class="flow-node" draggable="true" data-node="input">指令输入</div>
-                            <div class="flow-node" draggable="true" data-node="control">核心控制</div>
-                            <div class="flow-node" draggable="true" data-node="execute">执行送料</div>
-                            <div class="flow-node" draggable="true" data-node="feedback">反馈确认</div>
+                            <div class="flow-node" draggable="true" data-node="input">Command Input</div>
+                            <div class="flow-node" draggable="true" data-node="control">Core Control</div>
+                            <div class="flow-node" draggable="true" data-node="execute">Feeding Execution</div>
+                            <div class="flow-node" draggable="true" data-node="feedback">Feedback Confirmation</div>
                         </div>
                     </div>
                     
-                    <!-- 中间：绘图区域 -->
+                    <!-- Middle: Flowchart Area -->
                     <div class="bg-gray-50 p-4 rounded-lg border relative min-h-[400px]" id="flowChartArea">
-                        <h3 class="font-medium mb-3 text-center">流程图区域（拖放步骤到此）</h3>
+                        <h3 class="font-medium mb-3 text-center">Flowchart Area (Drag steps here)</h3>
                         <div id="connector1" class="flow-connector w-1/4 h-1 top-1/4 left-1/2 transform -translate-x-1/2 hidden"></div>
                         <div id="connector2" class="flow-connector w-1/4 h-1 top-2/4 left-1/2 transform -translate-x-1/2 hidden"></div>
                         <div id="connector3" class="flow-connector w-1/4 h-1 top-3/4 left-1/2 transform -translate-x-1/2 hidden"></div>
                         
                         <div id="dropZone1" class="absolute top-[15%] left-1/2 transform -translate-x-1/2 w-3/4 h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                            <span class="text-gray-400 text-sm">放置第一步：指令输入</span>
+                            <span class="text-gray-400 text-sm">Step 1: Command Input</span>
                         </div>
                         <div id="dropZone2" class="absolute top-[40%] left-1/2 transform -translate-x-1/2 w-3/4 h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                            <span class="text-gray-400 text-sm">放置第二步：核心控制</span>
+                            <span class="text-gray-400 text-sm">Step 2: Core Control</span>
                         </div>
                         <div id="dropZone3" class="absolute top-[65%] left-1/2 transform -translate-x-1/2 w-3/4 h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                            <span class="text-gray-400 text-sm">放置第三步：执行送料</span>
+                            <span class="text-gray-400 text-sm">Step 3: Feeding Execution</span>
                         </div>
                         <div id="dropZone4" class="absolute top-[90%] left-1/2 transform -translate-x-1/2 w-3/4 h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                            <span class="text-gray-400 text-sm">放置第四步：反馈确认</span>
+                            <span class="text-gray-400 text-sm">Step 4: Feedback Confirmation</span>
                         </div>
                     </div>
                     
-                    <!-- 右侧：说明 -->
+                    <!-- Right: Instructions -->
                     <div class="bg-gray-50 p-4 rounded-lg border">
-                        <h3 class="font-medium mb-3">步骤说明</h3>
+                        <h3 class="font-medium mb-3">Step Explanations</h3>
                         <ul class="space-y-4 text-sm">
                             <li class="flex">
-                                <span class="font-medium w-20">指令输入：</span>
-                                <span>用户按喂食按钮等输入操作</span>
+                                <span class="font-medium w-24">Command Input:</span>
+                                <span>User actions like pressing the feeding button</span>
                             </li>
                             <li class="flex">
-                                <span class="font-medium w-20">核心控制：</span>
-                                <span>MCU接收信号并进行判断处理</span>
+                                <span class="font-medium w-24">Core Control:</span>
+                                <span>MCU receives signals and performs judgment processing</span>
                             </li>
                             <li class="flex">
-                                <span class="font-medium w-20">执行送料：</span>
-                                <span>电机启动、送料等执行操作</span>
+                                <span class="font-medium w-24">Feeding Execution:</span>
+                                <span>Motor activation, material feeding and other execution operations</span>
                             </li>
                             <li class="flex">
-                                <span class="font-medium w-20">反馈确认：</span>
-                                <span>重量检测、记录时间、推送通知等</span>
+                                <span class="font-medium w-24">Feedback Confirmation:</span>
+                                <span>Weight detection, time recording, notification pushing, etc.</span>
                             </li>
                         </ul>
                         
                         <div class="mt-6 p-4 bg-green-50 border-l-4 border-secondary rounded">
-                            <p class="text-sm"><i class="fa fa-check-circle mr-2"></i>完成流程图后，可点击"提交"按钮完成任务。</p>
+                            <p class="text-sm"><i class="fa fa-check-circle mr-2"></i>After completing the flowchart, click the "Submit" button to finish the task.</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="flex justify-between mt-6">
                     <button id="backToStep2" class="border border-primary text-primary hover:bg-primary/5 px-6 py-2 rounded-lg transition-colors">
-                        <i class="fa fa-arrow-left mr-1"></i> 返回
+                        <i class="fa fa-arrow-left mr-1"></i> Back
                     </button>
                     <button id="submitBtn" class="bg-secondary hover:bg-secondary/90 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        提交 <i class="fa fa-check ml-1"></i>
+                        Submit <i class="fa fa-check ml-1"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- 工具实操区域 -->
+        <!-- Tool Practice Area -->
         <div class="bg-white rounded-xl shadow-lg p-6">
             <h2 class="text-xl font-bold mb-4 text-neutral flex items-center">
-                <i class="fa fa-external-link text-accent mr-2"></i>在线工具实操
+                <i class="fa fa-external-link text-accent mr-2"></i>Online Tool Practice
             </h2>
-            <p class="mb-4">完成上述练习后，你可以使用以下在线工具绘制正式的核心流程图：</p>
+            <p class="mb-4">After completing the above exercises, you can use the following online tool to create the official core flowchart:</p>
             
             <div class="flex flex-col md:flex-row items-center justify-between p-4 bg-gray-50 rounded-lg border mb-4">
                 <div class="flex items-center mb-4 md:mb-0">
                     <i class="fa fa-globe text-2xl text-primary mr-3"></i>
                     <div>
-                        <p class="font-medium"> diagrams.net 在线绘图工具</p>
-                        <p class="text-sm text-gray-500">用于绘制专业流程图的免费工具</p>
+                        <p class="font-medium">diagrams.net Online Diagram Tool</p>
+                        <p class="text-sm text-gray-500">A free tool for creating professional flowcharts</p>
                     </div>
                 </div>
                 <a href="https://app.diagrams.net/" target="_blank" class="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg transition-colors">
-                    打开工具 <i class="fa fa-external-link ml-1"></i>
+                    Open Tool <i class="fa fa-external-link ml-1"></i>
                 </a>
             </div>
             
             <div class="p-4 bg-blue-50 border-l-4 border-primary rounded">
-                <p class="text-sm"><i class="fa fa-info-circle mr-2"></i>使用提示：打开工具后，选择空白图表，使用流程图形状库，按照"指令输入→核心控制→执行送料→反馈确认"四个核心步骤绘制流程图，完成后保存并提交到班级群。</p>
+                <p class="text-sm"><i class="fa fa-info-circle mr-2"></i>Usage Tip: After opening the tool, select a blank diagram and use the flowchart shape library to create a flowchart following the four core steps ("Command Input → Core Control → Feeding Execution → Feedback Confirmation"). Save and submit it to the class group after completion.</p>
             </div>
         </div>
     </div>
 
-    <!-- 完成弹窗 -->
+    <!-- Completion Modal -->
     <div id="successModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 transform transition-all">
             <div class="text-center">
                 <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fa fa-check text-2xl text-secondary"></i>
                 </div>
-                <h3 class="text-xl font-bold mb-2">恭喜完成！</h3>
-                <p class="text-gray-600 mb-6">你已成功完成流程瘦身和核心流程图设计练习。</p>
+                <h3 class="text-xl font-bold mb-2">Congratulations!</h3>
+                <p class="text-gray-600 mb-6">You have successfully completed the process simplification and core flowchart design exercises.</p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
                     <button id="resetBtn" class="border border-primary text-primary hover:bg-primary/5 px-6 py-2 rounded-lg transition-colors">
-                        重新开始
+                        Restart
                     </button>
                     <button id="closeModalBtn" class="bg-secondary hover:bg-secondary/90 text-white px-6 py-2 rounded-lg transition-colors">
-                        前往在线工具
+                        Go to Online Tool
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 帮助弹窗 -->
+    <!-- Help Modal -->
     <div id="helpModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-xl p-6 max-w-lg w-full mx-4 max-h-[80vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">使用帮助</h3>
+                <h3 class="text-xl font-bold">Usage Help</h3>
                 <button id="closeHelpBtn" class="text-gray-500 hover:text-gray-700">
                     <i class="fa fa-times text-xl"></i>
                 </button>
             </div>
             <div class="space-y-4 text-sm">
                 <div>
-                    <h4 class="font-medium mb-2">步骤1：查看复杂流程</h4>
-                    <p>仔细阅读手动喂食的完整复杂流程，了解整个系统的工作步骤。</p>
+                    <h4 class="font-medium mb-2">Step 1: View Complex Process</h4>
+                    <p>Carefully read the complete complex process of manual feeding to understand all working steps of the system.</p>
                 </div>
                 <div>
-                    <h4 class="font-medium mb-2">步骤2：流程瘦身操作</h4>
-                    <p>识别并移除流程中的"无关细节"，包括：系统确认按钮、每0.3秒测、灯光提示。点击这些步骤将其划掉。</p>
+                    <h4 class="font-medium mb-2">Step 2: Process Simplification</h4>
+                    <p>Identify and remove "irrelevant details" from the process, including: system button confirmation, weight measurement every 0.3 seconds, and indicator light notification. Click on these steps to cross them out.</p>
                 </div>
                 <div>
-                    <h4 class="font-medium mb-2">步骤3：绘制核心流程图</h4>
-                    <p>将核心步骤（指令输入、核心控制、执行送料、反馈确认）拖放到流程图区域的相应位置，按顺序排列。</p>
+                    <h4 class="font-medium mb-2">Step 3: Create Core Flowchart</h4>
+                    <p>Drag the core steps (Command Input, Core Control, Feeding Execution, Feedback Confirmation) to their corresponding positions in the flowchart area and arrange them in order.</p>
                 </div>
                 <div>
-                    <h4 class="font-medium mb-2">在线工具实操</h4>
-                    <p>完成练习后，使用diagrams.net在线工具绘制正式的核心流程图，并提交到班级群。</p>
+                    <h4 class="font-medium mb-2">Online Tool Practice</h4>
+                    <p>After completing the exercises, use the diagrams.net online tool to create the official core flowchart and submit it to the class group.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 计时器功能
+        // Timer Functionality
         let timerInterval;
         let seconds = 0;
         
@@ -340,57 +340,57 @@
             document.getElementById('timer').textContent = '00:00';
         }
 
-        // 步骤导航功能
+        // Step Navigation Functionality
         function goToStep(stepNumber) {
-            // 隐藏所有步骤内容
+            // Hide all step contents
             document.getElementById('step1Content').classList.add('hidden');
             document.getElementById('step2Content').classList.add('hidden');
             document.getElementById('step3Content').classList.add('hidden');
             
-            // 重置所有步骤样式
+            // Reset all step styles
             document.getElementById('step1').classList.remove('step-active');
             document.getElementById('step2').classList.remove('step-active');
             document.getElementById('step3').classList.remove('step-active');
             
-            // 显示当前步骤内容和样式
+            // Show current step content and style
             document.getElementById(`step${stepNumber}Content`).classList.remove('hidden');
             document.getElementById(`step${stepNumber}`).classList.add('step-active');
             
-            // 开始计时（仅在第一步时）
+            // Start timer (only when entering Step 1)
             if (stepNumber === 1 && seconds === 0) {
                 startTimer();
             }
         }
 
-        // 步骤1相关
+        // Step 1 Related Logic
         document.addEventListener('DOMContentLoaded', () => {
-            // 5秒后启用下一步按钮
+            // Enable next step button after 5 seconds
             setTimeout(() => {
                 document.getElementById('toStep2').removeAttribute('disabled');
             }, 5000);
             
-            // 步骤1到步骤2
+            // Navigate from Step 1 to Step 2
             document.getElementById('toStep2').addEventListener('click', () => {
                 goToStep(2);
             });
             
-            // 步骤2返回步骤1
+            // Navigate back from Step 2 to Step 1
             document.getElementById('backToStep1').addEventListener('click', () => {
                 goToStep(1);
             });
             
-            // 步骤3返回步骤2
+            // Navigate back from Step 3 to Step 2
             document.getElementById('backToStep2').addEventListener('click', () => {
                 goToStep(2);
             });
 
-            // 流程瘦身操作
-            const processItems = document.querySelectorAll('#瘦身流程 .process-item');
+            // Process Simplification Operation
+            const processItems = document.querySelectorAll('#simplifiedProcess .process-item');
             let removedCount = 0;
             
             processItems.forEach(item => {
                 item.addEventListener('click', () => {
-                    // 如果是应该移除的项
+                    // Check if the item should be removed
                     if (!item.dataset.keep || item.dataset.keep === 'false') {
                         item.classList.toggle('removed');
                         
@@ -400,14 +400,14 @@
                             removedCount--;
                         }
                         
-                        // 当正确移除3项时，启用下一步
+                        // Enable next step when 3 items are correctly removed
                         if (removedCount === 3) {
                             document.getElementById('toStep3').removeAttribute('disabled');
                         } else {
                             document.getElementById('toStep3').setAttribute('disabled', 'true');
                         }
                     } else {
-                        // 提示不能移除
+                        // Highlight to indicate this item cannot be removed
                         item.classList.add('highlight');
                         setTimeout(() => {
                             item.classList.remove('highlight');
@@ -416,12 +416,12 @@
                 });
             });
             
-            // 步骤2到步骤3
+            // Navigate from Step 2 to Step 3
             document.getElementById('toStep3').addEventListener('click', () => {
                 goToStep(3);
             });
 
-            // 流程图拖放功能
+            // Flowchart Drag-and-Drop Functionality
             const dropZones = [
                 document.getElementById('dropZone1'),
                 document.getElementById('dropZone2'),
@@ -438,7 +438,7 @@
             const requiredNodes = ['input', 'control', 'execute', 'feedback'];
             let placedNodes = [];
             
-            // 为每个可拖动节点添加事件
+            // Add events to draggable nodes
             document.querySelectorAll('#availableNodes .flow-node').forEach(node => {
                 node.addEventListener('dragstart', (e) => {
                     e.dataTransfer.setData('text/plain', node.dataset.node);
@@ -452,7 +452,7 @@
                 });
             });
             
-            // 为每个放置区域添加事件
+            // Add events to drop zones
             dropZones.forEach((zone, index) => {
                 zone.addEventListener('dragover', (e) => {
                     e.preventDefault();
@@ -469,32 +469,32 @@
                     
                     const nodeType = e.dataTransfer.getData('text/plain');
                     
-                    // 检查是否是正确的位置
+                    // Check if the node is placed in the correct position
                     if (requiredNodes[index] === nodeType && !placedNodes.includes(nodeType)) {
-                        // 清空区域
+                        // Clear the zone content
                         zone.innerHTML = '';
                         
-                        // 创建新节点并添加到区域
+                        // Create new node and add to the zone
                         const newNode = document.createElement('div');
                         newNode.className = 'flow-node active w-full h-full flex items-center justify-center';
                         newNode.textContent = getNodeText(nodeType);
                         newNode.dataset.node = nodeType;
                         zone.appendChild(newNode);
                         
-                        // 记录已放置的节点
+                        // Record placed nodes
                         placedNodes.push(nodeType);
                         
-                        // 显示连接线
+                        // Show connection lines
                         if (index < connectors.length) {
                             connectors[index].classList.remove('hidden');
                         }
                         
-                        // 检查是否所有节点都已正确放置
+                        // Enable submit button when all nodes are correctly placed
                         if (placedNodes.length === 4) {
                             document.getElementById('submitBtn').removeAttribute('disabled');
                         }
                     } else {
-                        // 提示放置错误
+                        // Highlight to indicate incorrect placement
                         zone.classList.add('border-accent');
                         setTimeout(() => {
                             zone.classList.remove('border-accent');
@@ -503,24 +503,24 @@
                 });
             });
             
-            // 根据节点类型获取显示文本
+            // Get node display text based on node type
             function getNodeText(nodeType) {
                 const texts = {
-                    'input': '指令输入',
-                    'control': '核心控制',
-                    'execute': '执行送料',
-                    'feedback': '反馈确认'
+                    'input': 'Command Input',
+                    'control': 'Core Control',
+                    'execute': 'Feeding Execution',
+                    'feedback': 'Feedback Confirmation'
                 };
                 return texts[nodeType] || '';
             }
             
-            // 提交按钮
+            // Submit Button Functionality
             document.getElementById('submitBtn').addEventListener('click', () => {
                 stopTimer();
                 document.getElementById('successModal').classList.remove('hidden');
             });
             
-            // 弹窗按钮
+            // Modal Button Functionality
             document.getElementById('closeModalBtn').addEventListener('click', () => {
                 document.getElementById('successModal').classList.add('hidden');
                 window.open('https://app.diagrams.net/', '_blank');
@@ -533,7 +533,7 @@
                 goToStep(1);
             });
             
-            // 帮助按钮
+            // Help Button Functionality
             document.getElementById('helpBtn').addEventListener('click', () => {
                 document.getElementById('helpModal').classList.remove('hidden');
             });
@@ -542,18 +542,18 @@
                 document.getElementById('helpModal').classList.add('hidden');
             });
             
-            // 重置所有步骤
+            // Reset All Steps Functionality
             function resetAllSteps() {
-                // 重置步骤2
+                // Reset Step 2
                 processItems.forEach(item => {
                     item.classList.remove('removed');
                 });
                 removedCount = 0;
                 document.getElementById('toStep3').setAttribute('disabled', 'true');
                 
-                // 重置步骤3
+                // Reset Step 3
                 dropZones.forEach(zone => {
-                    zone.innerHTML = `<span class="text-gray-400 text-sm">放置第${zone.id.replace('dropZone', '')}步：${getNodeText(requiredNodes[zone.id.replace('dropZone', '') - 1])}</span>`;
+                    zone.innerHTML = `<span class="text-gray-400 text-sm">Step ${zone.id.replace('dropZone', '')}: ${getNodeText(requiredNodes[zone.id.replace('dropZone', '') - 1])}</span>`;
                 });
                 
                 connectors.forEach(connector => {
@@ -564,7 +564,7 @@
                 document.getElementById('submitBtn').setAttribute('disabled', 'true');
             }
             
-            // 初始显示步骤1
+            // Show Step 1 by default
             goToStep(1);
         });
     </script>
