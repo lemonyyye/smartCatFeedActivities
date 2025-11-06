@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>定量20g喂食算法交互验证</title>
+    <title>20g Quantitative Feeding Algorithm Verification</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -18,7 +18,7 @@
                         light: '#F9FAFB'
                     },
                     fontFamily: {
-                        sans: ['Microsoft YaHei', 'system-ui', 'sans-serif']
+                        sans: ['Inter', 'system-ui', 'sans-serif']
                     }
                 }
             }
@@ -46,202 +46,202 @@
 </head>
 <body class="bg-light min-h-screen">
     <div class="container mx-auto px-4 py-6 max-w-4xl">
-        <!-- 标题区 -->
+        <!-- Header Section -->
         <header class="text-center mb-8">
             <div class="flex items-center justify-center gap-2 text-primary mb-2">
                 <i class="fa fa-robot text-2xl"></i>
-                <h1 class="text-2xl md:text-3xl font-bold">定量20g喂食算法验证</h1>
+                <h1 class="text-2xl md:text-3xl font-bold">20g Quantitative Feeding Algorithm Verification</h1>
             </div>
-            <p class="text-neutral">填写并验证伪代码步骤，实现智能喂食器定量功能</p>
+            <p class="text-neutral">Complete and verify pseudocode steps to implement smart feeder quantification</p>
         </header>
 
-        <!-- 核心内容区 -->
+        <!-- Main Content Area -->
         <main class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <!-- 已知条件区 -->
+            <!-- Known Conditions Section -->
             <section class="mb-8">
                 <h2 class="text-lg font-bold text-dark mb-3 flex items-center">
-                    <i class="fa fa-info-circle text-primary mr-2"></i>已知条件
+                    <i class="fa fa-info-circle text-primary mr-2"></i>Known Conditions
                 </h2>
                 <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-primary">
                     <ul class="list-disc list-inside space-y-1 text-dark">
-                        <li>目标食量固定为20g，电机每转动1圈可送料5g</li>
-                        <li>MCU可接收用户指令（如APP点击）并控制电机转动</li>
-                        <li>系统可记录电机转动圈数，并计算当前送料量</li>
+                        <li>Target feeding amount is fixed at 20g; motor dispenses 5g per rotation</li>
+                        <li>MCU can receive user commands (e.g., app click) and control motor rotation</li>
+                        <li>System can record motor rotations and calculate current feeding amount</li>
                     </ul>
                 </div>
             </section>
 
-            <!-- 伪代码填写区 -->
+            <!-- Pseudocode Input Section -->
             <section class="mb-8">
                 <h2 class="text-lg font-bold text-dark mb-4 flex items-center">
-                    <i class="fa fa-code text-primary mr-2"></i>伪代码步骤填写
+                    <i class="fa fa-code text-primary mr-2"></i>Pseudocode Step Input
                 </h2>
                 
                 <div class="space-y-6">
-                    <!-- 输入部分 -->
+                    <!-- Input Parameters -->
                     <div class="step-box" id="inputSection">
                         <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-dark">输入参数</h3>
-                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">基础参数</span>
+                            <h3 class="font-bold text-dark">Input Parameters</h3>
+                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">Basic Parameters</span>
                         </div>
-                        <p class="text-sm text-neutral mb-2">请定义目标食量和每圈送料量：</p>
+                        <p class="text-sm text-neutral mb-2">Define target feeding amount and per-rotation dispense:</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm text-dark mb-1">目标食量</label>
-                                <input type="text" id="targetWeight" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="例如：20g">
+                                <label class="block text-sm text-dark mb-1">Target Feeding Amount</label>
+                                <input type="text" id="targetWeight" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="e.g.: 20g">
                             </div>
                             <div>
-                                <label class="block text-sm text-dark mb-1">每圈送料量</label>
-                                <input type="text" id="perCircle" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="例如：5g">
+                                <label class="block text-sm text-dark mb-1">Dispense per Rotation</label>
+                                <input type="text" id="perCircle" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="e.g.: 5g">
                             </div>
                         </div>
                         <div id="inputTip" class="mt-2 text-sm hidden"></div>
                     </div>
 
-                    <!-- 步骤1 -->
+                    <!-- Step 1 -->
                     <div class="step-box" id="step1Section">
                         <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-dark">步骤1：接收指令</h3>
-                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">触发环节</span>
+                            <h3 class="font-bold text-dark">Step 1: Receive Command</h3>
+                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">Trigger Phase</span>
                         </div>
-                        <p class="text-sm text-neutral mb-2">请描述MCU如何接收用户指令：</p>
-                        <textarea id="step1Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="例如：MCU接收用户的喂食指令（如APP点击）"></textarea>
+                        <p class="text-sm text-neutral mb-2">Describe how MCU receives user command:</p>
+                        <textarea id="step1Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="e.g.: MCU receives user feeding command (e.g., app click)"></textarea>
                         <div id="step1Tip" class="mt-2 text-sm hidden"></div>
                     </div>
 
-                    <!-- 步骤2 -->
+                    <!-- Step 2 -->
                     <div class="step-box" id="step2Section">
                         <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-dark">步骤2：初始化</h3>
-                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">准备环节</span>
+                            <h3 class="font-bold text-dark">Step 2: Initialization</h3>
+                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">Preparation Phase</span>
                         </div>
-                        <p class="text-sm text-neutral mb-2">请描述电机启动和初始化操作：</p>
-                        <textarea id="step2Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="例如：电机开始正转，初始化当前圈数 = 0"></textarea>
+                        <p class="text-sm text-neutral mb-2">Describe motor activation and initialization:</p>
+                        <textarea id="step2Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="e.g.: Motor starts forward rotation, initialize current rotations = 0"></textarea>
                         <div id="step2Tip" class="mt-2 text-sm hidden"></div>
                     </div>
 
-                    <!-- 步骤3 -->
+                    <!-- Step 3 -->
                     <div class="step-box" id="step3Section">
                         <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-dark">步骤3：计数与计算</h3>
-                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">核心环节</span>
+                            <h3 class="font-bold text-dark">Step 3: Counting & Calculation</h3>
+                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">Core Phase</span>
                         </div>
-                        <p class="text-sm text-neutral mb-2">请描述圈数计数和食量计算逻辑：</p>
-                        <textarea id="step3Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="例如：每转动1圈，当前圈数 = 当前圈数 + 1，计算当前食量 = 当前圈数 × 每圈送料"></textarea>
+                        <p class="text-sm text-neutral mb-2">Describe rotation counting and amount calculation logic:</p>
+                        <textarea id="step3Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="e.g.: For each rotation, current rotations = current rotations + 1, calculate current amount = current rotations × per-rotation dispense"></textarea>
                         <div id="step3Tip" class="mt-2 text-sm hidden"></div>
                     </div>
 
-                    <!-- 步骤4 -->
+                    <!-- Step 4 -->
                     <div class="step-box" id="step4Section">
                         <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-dark">步骤4：判断与控制</h3>
-                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">决策环节</span>
+                            <h3 class="font-bold text-dark">Step 4: Judgment & Control</h3>
+                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">Decision Phase</span>
                         </div>
-                        <p class="text-sm text-neutral mb-2">请描述食量判断和电机控制逻辑：</p>
-                        <textarea id="step4Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="例如：判断当前食量是否 ≥ 目标食量？是：电机停止；否：回到步骤3"></textarea>
+                        <p class="text-sm text-neutral mb-2">Describe amount judgment and motor control logic:</p>
+                        <textarea id="step4Input" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="e.g.: Check if current amount ≥ target amount? Yes: stop motor; No: return to Step 3"></textarea>
                         <div id="step4Tip" class="mt-2 text-sm hidden"></div>
                     </div>
 
-                    <!-- 输出部分 -->
+                    <!-- Output Section -->
                     <div class="step-box" id="outputSection">
                         <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-dark">输出结果</h3>
-                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">反馈环节</span>
+                            <h3 class="font-bold text-dark">Output Result</h3>
+                            <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">Feedback Phase</span>
                         </div>
-                        <p class="text-sm text-neutral mb-2">请描述最终输出内容：</p>
-                        <textarea id="outputInput" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="例如：记录“喂食成功”，并向APP推送结果"></textarea>
+                        <p class="text-sm text-neutral mb-2">Describe final output content:</p>
+                        <textarea id="outputInput" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50" rows="2" placeholder="e.g.: Record 'feeding successful' and push result to app"></textarea>
                         <div id="outputTip" class="mt-2 text-sm hidden"></div>
                     </div>
                 </div>
             </section>
 
-            <!-- 操作按钮区 -->
+            <!-- Action Buttons -->
             <section class="flex flex-wrap gap-4 justify-center mb-6">
                 <button id="checkBtn" class="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all flex items-center gap-2">
-                    <i class="fa fa-check-circle"></i>验证算法
+                    <i class="fa fa-check-circle"></i>Verify Algorithm
                 </button>
                 <button id="fillBtn" class="px-6 py-2.5 bg-neutral text-white rounded-lg font-medium hover:bg-neutral/90 transition-all flex items-center gap-2">
-                    <i class="fa fa-magic"></i>自动填充
+                    <i class="fa fa-magic"></i>Auto-Fill
                 </button>
                 <button id="resetBtn" class="px-6 py-2.5 bg-gray-200 text-dark rounded-lg font-medium hover:bg-gray-300 transition-all flex items-center gap-2">
-                    <i class="fa fa-refresh"></i>重置
+                    <i class="fa fa-refresh"></i>Reset
                 </button>
             </section>
 
-            <!-- 验证结果区 -->
+            <!-- Verification Result Section -->
             <section id="resultSection" class="hidden">
                 <div class="border-2 rounded-xl p-5 mb-6">
                     <h2 class="text-lg font-bold text-dark mb-4 flex items-center">
-                        <i class="fa fa-bar-chart text-primary mr-2"></i>算法验证结果
+                        <i class="fa fa-bar-chart text-primary mr-2"></i>Algorithm Verification Result
                     </h2>
                     <div id="resultList" class="space-y-3 mb-4"></div>
                     <div class="flex justify-between items-center">
                         <div>
-                            <span class="text-sm text-neutral">总评分：</span>
+                            <span class="text-sm text-neutral">Total Score:</span>
                             <span id="totalScore" class="text-2xl font-bold text-success ml-1">0</span>
                         </div>
                         <button id="simulateBtn" class="px-4 py-2 bg-success text-white rounded-lg text-sm font-medium hover:bg-success/90 transition-all hidden">
-                            <i class="fa fa-play-circle"></i>运行模拟
+                            <i class="fa fa-play-circle"></i>Run Simulation
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- 算法模拟区 -->
+            <!-- Algorithm Simulation Section -->
             <section id="simulationSection" class="hidden">
                 <div class="border-2 border-primary rounded-xl p-5 bg-primary/5">
                     <h2 class="text-lg font-bold text-primary mb-4 flex items-center">
-                        <i class="fa fa-cogs mr-2"></i>喂食过程模拟
+                        <i class="fa fa-cogs mr-2"></i>Feeding Process Simulation
                     </h2>
                     <div class="code-block" id="simulationLog">
-                        <!-- 模拟日志会动态插入这里 -->
+                        <!-- Simulation log will be inserted here dynamically -->
                     </div>
                     <div class="mt-4 flex justify-center">
                         <button id="reSimulateBtn" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-all">
-                            <i class="fa fa-repeat"></i>重新模拟
+                            <i class="fa fa-repeat"></i>Re-simulate
                         </button>
                     </div>
                 </div>
             </section>
         </main>
 
-        <!-- 标准伪代码参考区 -->
+        <!-- Standard Pseudocode Reference -->
         <section class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <h2 class="text-lg font-bold text-dark mb-3 flex items-center">
-                <i class="fa fa-book text-primary mr-2"></i>标准伪代码参考
+                <i class="fa fa-book text-primary mr-2"></i>Standard Pseudocode Reference
             </h2>
             <div class="code-block">
-                <p># 定量喂食20g算法（伪代码）</p>
-                <p>输入：目标食量 = 20g，每圈送料 = 5g</p>
-                <p>步骤1：MCU接收用户的喂食指令（如APP点击）</p>
-                <p>步骤2：电机开始正转，初始化当前圈数 = 0</p>
-                <p>步骤3：每转动1圈，当前圈数 = 当前圈数 + 1<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;计算当前食量 = 当前圈数 × 每圈送料（5g）</p>
-                <p>步骤4：判断当前食量是否 ≥ 目标食量（20g）？<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;- 是：电机停止转动<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;- 否：回到步骤3，继续转动</p>
-                <p>输出：记录“喂食成功”，并向APP推送结果</p>
+                <p># 20g Quantitative Feeding Algorithm (Pseudocode)</p>
+                <p>Input: Target amount = 20g, Dispense per rotation = 5g</p>
+                <p>Step 1: MCU receives user feeding command (e.g., app click)</p>
+                <p>Step 2: Motor starts forward rotation, initialize current rotations = 0</p>
+                <p>Step 3: For each rotation, current rotations = current rotations + 1<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Calculate current amount = current rotations × dispense per rotation (5g)</p>
+                <p>Step 4: Check if current amount ≥ target amount (20g)?<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;- Yes: Stop motor rotation<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;- No: Return to Step 3, continue rotation</p>
+                <p>Output: Record "feeding successful" and push result to app</p>
             </div>
         </section>
 
-        <!-- 页脚 -->
+        <!-- Footer -->
         <footer class="text-center text-neutral text-sm">
-            <p>智能喂食器算法教学工具 © 2024</p>
+            <p>Smart Feeder Algorithm Teaching Tool © 2024</p>
         </footer>
     </div>
 
     <script>
-        // 核心数据
+        // Core data
         const correctAnswers = {
             input: { target: '20g', perCircle: '5g' },
-            step1: 'MCU接收用户的喂食指令（如APP点击）',
-            step2: '电机开始正转，初始化当前圈数 = 0',
-            step3: '每转动1圈，当前圈数 = 当前圈数 + 1 计算当前食量 = 当前圈数 × 每圈送料（5g）',
-            step4: '判断当前食量是否 ≥ 目标食量（20g）？ 是：电机停止转动 否：回到步骤3，继续转动',
-            output: '记录“喂食成功”，并向APP推送结果'
+            step1: 'MCU receives user feeding command (e.g., app click)',
+            step2: 'Motor starts forward rotation, initialize current rotations = 0',
+            step3: 'For each rotation, current rotations = current rotations + 1 Calculate current amount = current rotations × dispense per rotation (5g)',
+            step4: 'Check if current amount ≥ target amount (20g)? Yes: Stop motor rotation No: Return to Step 3, continue rotation',
+            output: 'Record "feeding successful" and push result to app'
         };
 
-        // DOM元素
+        // DOM elements
         const inputElements = {
             target: document.getElementById('targetWeight'),
             perCircle: document.getElementById('perCircle'),
@@ -254,25 +254,25 @@
                 input: document.getElementById('step1Input'),
                 tip: document.getElementById('step1Tip'),
                 section: document.getElementById('step1Section'),
-                name: '步骤1'
+                name: 'Step 1'
             },
             {
                 input: document.getElementById('step2Input'),
                 tip: document.getElementById('step2Tip'),
                 section: document.getElementById('step2Section'),
-                name: '步骤2'
+                name: 'Step 2'
             },
             {
                 input: document.getElementById('step3Input'),
                 tip: document.getElementById('step3Tip'),
                 section: document.getElementById('step3Section'),
-                name: '步骤3'
+                name: 'Step 3'
             },
             {
                 input: document.getElementById('step4Input'),
                 tip: document.getElementById('step4Tip'),
                 section: document.getElementById('step4Section'),
-                name: '步骤4'
+                name: 'Step 4'
             }
         ];
 
@@ -282,40 +282,40 @@
             section: document.getElementById('outputSection')
         };
 
-        // 按钮元素
+        // Button elements
         const checkBtn = document.getElementById('checkBtn');
         const fillBtn = document.getElementById('fillBtn');
         const resetBtn = document.getElementById('resetBtn');
         const simulateBtn = document.getElementById('simulateBtn');
         const reSimulateBtn = document.getElementById('reSimulateBtn');
 
-        // 结果元素
+        // Result elements
         const resultSection = document.getElementById('resultSection');
         const resultList = document.getElementById('resultList');
         const totalScoreEl = document.getElementById('totalScore');
         const simulationSection = document.getElementById('simulationSection');
         const simulationLog = document.getElementById('simulationLog');
 
-        // 验证算法
+        // Verify algorithm
         checkBtn.addEventListener('click', () => {
             let totalScore = 0;
             resultList.innerHTML = '';
             
-            // 验证输入参数
+            // Verify input parameters
             let inputScore = 0;
             if (inputElements.target.value.trim() === correctAnswers.input.target && 
                 inputElements.perCircle.value.trim() === correctAnswers.input.perCircle) {
                 inputScore = 20;
-                showTip(inputElements.tip, '✅ 输入参数正确', 'text-success');
+                showTip(inputElements.tip, '✅ Correct input parameters', 'text-success');
                 setStepStatus(inputElements.section, 'correct');
             } else {
-                showTip(inputElements.tip, '❌ 输入参数错误（正确值：目标食量20g，每圈送料5g）', 'text-secondary');
+                showTip(inputElements.tip, '❌ Incorrect input parameters (Correct: Target 20g, 5g per rotation)', 'text-secondary');
                 setStepStatus(inputElements.section, 'error');
             }
-            addResultItem('输入参数', inputScore);
+            addResultItem('Input Parameters', inputScore);
             totalScore += inputScore;
 
-            // 验证步骤
+            // Verify steps
             stepElements.forEach((step, index) => {
                 const stepKey = `step${index + 1}`;
                 const userInput = step.input.value.trim().replace(/\s+/g, ' ');
@@ -324,10 +324,10 @@
 
                 if (userInput === correctInput) {
                     score = 20;
-                    showTip(step.tip, `✅ ${step.name}正确`, 'text-success');
+                    showTip(step.tip, `✅ ${step.name} correct`, 'text-success');
                     setStepStatus(step.section, 'correct');
                 } else {
-                    showTip(step.tip, `❌ ${step.name}错误（参考：${correctAnswers[stepKey]}）`, 'text-secondary');
+                    showTip(step.tip, `❌ ${step.name} incorrect (Reference: ${correctAnswers[stepKey]})`, 'text-secondary');
                     setStepStatus(step.section, 'error');
                 }
                 
@@ -335,27 +335,27 @@
                 totalScore += score;
             });
 
-            // 验证输出
+            // Verify output
             let outputScore = 0;
             const userOutput = outputElements.input.value.trim().replace(/\s+/g, ' ');
             const correctOutput = correctAnswers.output.replace(/\s+/g, ' ');
             
             if (userOutput === correctOutput) {
                 outputScore = 20;
-                showTip(outputElements.tip, '✅ 输出结果正确', 'text-success');
+                showTip(outputElements.tip, '✅ Correct output result', 'text-success');
                 setStepStatus(outputElements.section, 'correct');
             } else {
-                showTip(outputElements.tip, `❌ 输出结果错误（参考：${correctAnswers.output}）`, 'text-secondary');
+                showTip(outputElements.tip, `❌ Incorrect output result (Reference: ${correctAnswers.output})`, 'text-secondary');
                 setStepStatus(outputElements.section, 'error');
             }
-            addResultItem('输出结果', outputScore);
+            addResultItem('Output Result', outputScore);
             totalScore += outputScore;
 
-            // 显示结果
-            totalScoreEl.textContent = `${totalScore}分`;
+            // Show results
+            totalScoreEl.textContent = `${totalScore} points`;
             resultSection.classList.remove('hidden');
             
-            // 满分显示模拟按钮
+            // Show simulation button for perfect score
             if (totalScore === 100) {
                 simulateBtn.classList.remove('hidden');
             } else {
@@ -363,7 +363,7 @@
             }
         });
 
-        // 自动填充
+        // Auto-fill function
         fillBtn.addEventListener('click', () => {
             inputElements.target.value = correctAnswers.input.target;
             inputElements.perCircle.value = correctAnswers.input.perCircle;
@@ -375,12 +375,12 @@
             
             outputElements.input.value = correctAnswers.output;
             
-            // 清除提示和状态
+            // Clear tips and statuses
             clearAllTips();
             clearAllStepStatus();
         });
 
-        // 重置
+        // Reset function
         resetBtn.addEventListener('click', () => {
             inputElements.target.value = '';
             inputElements.perCircle.value = '';
@@ -397,22 +397,22 @@
             simulationSection.classList.add('hidden');
         });
 
-        // 运行模拟
+        // Run simulation
         simulateBtn.addEventListener('click', runSimulation);
         reSimulateBtn.addEventListener('click', runSimulation);
 
-        // 模拟喂食过程
+        // Simulate feeding process
         function runSimulation() {
             simulationLog.innerHTML = '';
             simulationSection.classList.remove('hidden');
             
-            // 模拟步骤
-            logSimulation('开始定量喂食流程...');
-            logSimulation(`1. 输入参数：目标食量=${correctAnswers.input.target}，每圈送料=${correctAnswers.input.perCircle}`);
+            // Simulation steps
+            logSimulation('Starting quantitative feeding process...');
+            logSimulation(`1. Input parameters: Target amount=${correctAnswers.input.target}, Dispense per rotation=${correctAnswers.input.perCircle}`);
             logSimulation('2. ' + correctAnswers.step1);
             logSimulation('3. ' + correctAnswers.step2);
             
-            // 模拟圈数转动
+            // Simulate rotations
             let currentCircle = 0;
             const target = 20;
             const perCircle = 5;
@@ -420,56 +420,56 @@
             const simulationInterval = setInterval(() => {
                 currentCircle++;
                 const currentWeight = currentCircle * perCircle;
-                logSimulation(`4. 步骤3执行：当前圈数=${currentCircle}，当前食量=${currentWeight}g`);
+                logSimulation(`4. Executing Step 3: Current rotations=${currentCircle}, Current amount=${currentWeight}g`);
                 
                 if (currentWeight >= target) {
                     clearInterval(simulationInterval);
-                    logSimulation(`5. 步骤4判断：当前食量${currentWeight}g ≥ 目标${target}g → 电机停止转动`);
+                    logSimulation(`5. Step 4 judgment: Current amount ${currentWeight}g ≥ Target ${target}g → Stopping motor`);
                     logSimulation('6. ' + correctAnswers.output);
-                    logSimulation('✅ 定量喂食完成！');
+                    logSimulation('✅ Quantitative feeding completed!');
                 }
             }, 1500);
         }
 
-        // 工具函数：显示提示
+        // Utility: Show tip
         function showTip(element, text, className) {
             element.textContent = text;
             element.className = `mt-2 text-sm ${className}`;
             element.classList.remove('hidden');
         }
 
-        // 工具函数：设置步骤状态
+        // Utility: Set step status
         function setStepStatus(element, status) {
             element.classList.remove('step-active', 'step-correct', 'step-error');
             element.classList.add(`step-${status}`);
         }
 
-        // 工具函数：添加结果项
+        // Utility: Add result item
         function addResultItem(name, score) {
             const item = document.createElement('div');
             item.className = 'flex justify-between items-center';
             item.innerHTML = `
                 <span>${name}</span>
-                <span class="${score === 20 ? 'text-success' : 'text-secondary'} font-medium">${score}分</span>
+                <span class="${score === 20 ? 'text-success' : 'text-secondary'} font-medium">${score} points</span>
             `;
             resultList.appendChild(item);
         }
 
-        // 工具函数：清除所有提示
+        // Utility: Clear all tips
         function clearAllTips() {
             inputElements.tip.classList.add('hidden');
             stepElements.forEach(step => step.tip.classList.add('hidden'));
             outputElements.tip.classList.add('hidden');
         }
 
-        // 工具函数：清除所有步骤状态
+        // Utility: Clear all step statuses
         function clearAllStepStatus() {
             inputElements.section.classList.remove('step-correct', 'step-error');
             stepElements.forEach(step => step.section.classList.remove('step-correct', 'step-error'));
             outputElements.section.classList.remove('step-correct', 'step-error');
         }
 
-        // 工具函数：模拟日志
+        // Utility: Simulation log
         function logSimulation(text) {
             const logItem = document.createElement('p');
             logItem.className = 'mb-1';
@@ -478,7 +478,7 @@
             simulationLog.scrollTop = simulationLog.scrollHeight;
         }
 
-        // 步骤输入聚焦效果
+        // Input focus effects
         [inputElements.target, inputElements.perCircle, outputElements.input]
             .concat(stepElements.map(step => step.input))
             .forEach(input => {
