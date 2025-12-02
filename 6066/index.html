@@ -3,112 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>香港地标AR导览 - 中国银行大厦</title>
-    <!-- 稳定CDN：解决依赖加载失败问题 -->
+    <title>香港地标AR导览</title>
+    <!-- 仅保留必需依赖，无多余脚本 -->
     <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.0/dist/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.3/aframe/build/aframe-ar-nft.js"></script>
     <style>
         body { margin: 0; padding: 0; overflow: hidden; background: #000; }
-        /* 加载提示优化：清晰显示状态，避免用户误解 */
+        /* 仅保留简单加载提示，无复杂样式 */
         .loading { 
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: white; font-size: 16px; text-align: center; line-height: 1.5;
-            z-index: 9999; /* 确保在最上层显示 */
-        }
-        /* 错误提示样式 */
-        .error { 
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            color: #ff4444; font-size: 14px; background: rgba(0,0,0,0.8); padding: 8px 16px;
-            border-radius: 4px; display: none; z-index: 9999;
+            color: white; font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <!-- 加载提示（模型加载完成前显示） -->
-    <div class="loading" id="loading">
-        加载中...<br>
-        请准备AR标记，允许摄像头权限
-    </div>
-    <!-- 错误提示（模型加载失败时显示） -->
-    <div class="error" id="error">模型加载失败，请检查文件路径或模型格式</div>
+    <div class="loading" id="loading">加载中... 请扫描AR标记</div>
 
-    <!-- AR场景核心配置：解决HTTPS提示、优化识别精度 -->
-    <a-scene 
-        arjs="
-            trackingMethod: best; 
-            sourceType: webcam; 
-            markerSize: 0.297; /* A4标记尺寸（米），A6改为0.148 */
-            detectionMode: mono_and_matrix;
-            disableWebXR: true; /* 屏蔽VR模式提示，专注AR功能 */
-            detectionRatio: 0.8; /* 提高标记识别灵敏度 */
-        "
-        vr-mode-ui="enabled: false"  <!-- 隐藏VR模式按钮 -->
-        loading-screen="enabled: false"  <!-- 禁用默认加载屏 -->
-        renderer="precision: low;"> <!-- 降低渲染精度，提升手机流畅度 -->
-
-        <!-- 自定义AR标记：绑定你的marker.png -->
-        <a-marker type="pattern" url="assets/marker.png" id="landmarkMarker">
-            <!-- 香港中国银行大厦3D模型：适配低多边形模型参数 -->
+    <!-- AR场景核心：仅保留必需配置，删除所有冗余参数 -->
+    <a-scene arjs="markerSize: 0.297; sourceType: webcam;" vr-mode-ui="enabled: false">
+        <!-- 自定义AR标记：核心绑定 -->
+        <a-marker type="pattern" url="assets/marker.png">
+            <!-- 3D模型：仅保留加载和基础参数，无多余动画（可按需删除animation） -->
             <a-entity 
                 gltf-model="#landmarkModel" 
-                scale="0.08 0.08 0.08"  <!-- 适配700KB低多边形模型（可微调） -->
-                position="0 0 0"        <!-- 模型在标记上的初始位置 -->
-                rotation="0 90 0"       <!-- 旋转90度，展示大厦正面 -->
-                animation="property: rotation; to: 0 450 0; dur: 15000; repeat: indefinite;">
+                scale="0.08 0.08 0.08" 
+                position="0 0 0"
+                animation="property: rotation; to: 0 360 0; dur: 15000; repeat: indefinite;">
             </a-entity>
         </a-marker>
 
-        <!-- 模型资源预加载：优化加载逻辑，添加失败处理 -->
-        <a-assets id="assets">
-            <a-asset-item 
-                id="landmarkModel" 
-                src="assets/model/landmark.glb"
-                onload="document.getElementById('loading').style.display='none'"  <!-- 加载成功隐藏提示 -->
-                onerror="document.getElementById('loading').style.display='none'; document.getElementById('error').style.display='block'"> <!-- 加载失败显示错误 -->
-            </a-asset-item>
+        <!-- 模型预加载：仅保留核心路径 -->
+        <a-assets>
+            <a-asset-item id="landmarkModel" src="assets/model/landmark.glb" onload="document.getElementById('loading').style.display='none'"></a-asset-item>
         </a-assets>
     </a-scene>
 
-    <!-- 核心功能脚本：解决摄像头权限、标记识别反馈 -->
+    <!-- 仅保留摄像头权限基础提示，无多余逻辑 -->
     <script>
-        // 1. 摄像头权限检测（友好提示，避免用户忽略权限请求）
-        document.addEventListener('DOMContentLoaded', () => {
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .catch(err => {
-                        alert("AR功能需要摄像头权限！\\n1. 请在浏览器弹出的提示中选择'允许'\\n2. 若未弹出提示，请到手机设置-隐私-摄像头中开启权限");
-                        console.error("摄像头权限错误：", err);
-                    });
-            } else {
-                alert("你的浏览器不支持AR功能！请使用手机Chrome或Safari浏览器");
-            }
+        navigator.mediaDevices.getUserMedia({ video: true }).catch(() => {
+            alert("请允许摄像头权限，否则无法使用AR功能");
         });
-
-        // 2. 标记识别状态反馈（帮助用户确认是否识别成功）
-        const marker = document.getElementById('landmarkMarker');
-        marker.addEventListener('markerFound', () => {
-            console.log("✅ AR标记识别成功！模型已显示");
-            // 可选：添加识别成功提示（避免用户没注意到模型）
-            const successTip = document.createElement('div');
-            successTip.style.cssText = "position:fixed; top:20px; left:50%; transform:translateX(-50%); color:white; background:rgba(0,255,0,0.8); padding:8px 16px; border-radius:4px; z-index:9999;";
-            successTip.textContent = "标记识别成功！";
-            document.body.appendChild(successTip);
-            setTimeout(() => successTip.remove(), 2000);
-        });
-
-        marker.addEventListener('markerLost', () => {
-            console.log("⚠️ AR标记已丢失，请重新对准");
-        });
-
-        // 3. 模型加载超时处理（避免一直停在加载中）
-        setTimeout(() => {
-            const loading = document.getElementById('loading');
-            if (loading.style.display !== 'none') {
-                loading.style.display = 'none';
-                document.getElementById('error').style.display = 'block';
-                document.getElementById('error').textContent = "模型加载超时，请检查网络或模型文件";
-            }
-        }, 10000); // 10秒超时
     </script>
 </body>
 </html>
