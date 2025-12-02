@@ -78,6 +78,10 @@
                 textOverlay.style.display = 'block'; // 显示文字
             });
 
+            marker.addEventListener('markerLost', () => {
+                textOverlay.style.display = 'none'; // 隐藏文字
+                console.log('⚠️ 丢失 AR 标记，文字已隐藏');
+            });
             
         });
     </script>
