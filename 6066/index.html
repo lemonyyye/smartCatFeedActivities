@@ -19,7 +19,7 @@
     <!-- AR场景：仅保留核心配置，添加标记尺寸适配A4 -->
     <a-scene arjs="trackingMethod: best; sourceType: webcam; markerSize: 0.297;">
         <!-- 1. 可选：用自定义marker.png（替换默认hiro标记），不想换就保留preset="hiro" -->
-        <a-marker type="pattern" url="assets/marker.png">
+        <a-marker preset="hiro">
             <!-- 2. 保留红色立方体，调整位置和动画更直观 -->
             <a-box 
                 position="0 0.3 0"  <!-- 稍微抬高，避免贴地 -->
