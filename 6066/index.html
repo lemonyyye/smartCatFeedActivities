@@ -1,45 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>香港地标AR（基础版）</title>
-    <!-- 引入Three.js和AR.js（保持不变） -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hong Kong Landmark AR</title>
+    <!-- 引入Three.js（3D场景核心库） -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
+    <!-- 引入AR.js（AR识别核心库，依赖A-Frame） -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <style>
-        /* 简单加载提示，避免黑屏误解 */
-        .loading {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: white; font-size: 16px; z-index: 999;
-        }
-    </style>
+    <!-- 引入AR.js辅助工具（简化标记识别） -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/threex-artoolkitcontroller.js"></script>
 </head>
-<body>
-    <div class="loading" id="loading">加载中... 请扫描AR标记</div>
-
-    <!-- AR场景：仅保留核心配置，添加标记尺寸适配A4 -->
-    <a-scene arjs="trackingMethod: best; sourceType: webcam; markerSize: 0.297;">
-        <!-- 1. 可选：用自定义marker.png（替换默认hiro标记），不想换就保留preset="hiro" -->
-        <a-marker preset="hiro">
-            <!-- 2. 保留红色立方体，调整位置和动画更直观 -->
-            <a-box position="0 0.3 0"  rotation="0 45 0"  color="#FF0000"   scale="0.5 0.5 0.5">
-            </a-box>
+<body style="margin: 0; overflow: hidden;">
+    <!-- AR场景容器：配置摄像头、识别模式 -->
+    <a-scene 
+        arjs="trackingMethod: best; sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        renderer="antialias: true; alpha: true"
+    >
+        <!-- 图像标记（预设HIRO标记，无需自定义，可直接打印测试） -->
+        <a-marker preset="hiro" id="landmarkMarker">
+            <!-- 香港地标3D模型：用立方体模拟（可替换为真实模型URL） -->
+            <!-- 示例1：香港会展中心（简化立方体，红色主体+蓝色顶部） -->
+            <a-group position="0 0 0">
+                <!-- 主体建筑 -->
+                <a-box 
+                    position="0 1 0" 
+                    rotation="0 0 0" 
+                    width="2" 
+                    height="1.5" 
+                    depth="1" 
+                    color="#E74C3C"
+                ></a-box>
+                <!-- 顶部标志性结构 -->
+                <a-box 
+                    position="0 2.25 0" 
+                    rotation="0 0 0" 
+                    width="2.2" 
+                    height="0.3" 
+                    depth="1.2" 
+                    color="#3498DB"
+                ></a-box>
+                <!-- 交互提示文本（点击模型显示） -->
+                <a-text 
+                    value="Hong Kong Convention and Exhibition Centre" 
+                    position="0 3 0" 
+                    rotation="-90 0 0" 
+                    scale="1 1 1" 
+                    color="#000"
+                    opacity="0"
+                    id="landmarkText"
+                ></a-text>
+            </a-group>
         </a-marker>
 
-        <!-- 相机（保持不变） -->
-        <a-entity camera></a-entity>
+        <!-- 相机：绑定用户视角 -->
+        <a-entity camera look-controls></a-entity>
     </a-scene>
 
-    <!-- 摄像头权限提示（避免用户忽略） -->
+    <!-- 交互脚本：点击模型显示文本 -->
     <script>
-        // 加载完成后隐藏提示（AR场景就绪即执行）
-        document.querySelector('a-scene').addEventListener('loaded', () => {
-            document.getElementById('loading').style.display = 'none';
-        });
+        // 等待AR场景加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            const marker = document.getElementById('landmarkMarker');
+            const landmarkText = document.getElementById('landmarkText');
+            let isTextVisible = false;
 
-        // 摄像头权限请求
-        navigator.mediaDevices.getUserMedia({ video: true }).catch(() => {
-            alert("请允许摄像头权限，否则无法使用AR功能");
+            // 点击模型切换文本显示/隐藏
+            marker.addEventListener('click', function() {
+                isTextVisible = !isTextVisible;
+                landmarkText.setAttribute('opacity', isTextVisible ? 1 : 0);
+            });
+
+            // 初始化提示：控制台打印使用说明
+            console.log('AR Hong Kong Landmark - Usage:');
+            console.log('1. Print the HIRO marker (search "AR.js HIRO marker" to download)');
+            console.log('2. Point your phone/PC camera at the marker');
+            console.log('3. Click the 3D model to show/hide landmark name');
         });
     </script>
 </body>
-</html>an hua
+</html>
