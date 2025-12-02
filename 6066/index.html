@@ -3,69 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hong Kong Landmark AR (Local Marker Version)</title>
-    <!-- 稳定版依赖库（国内可访问） -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-    <script src="https://unpkg.com/ar-nft@2.4.0/build/threex-artoolkitcore.js"></script>
-    <script src="https://unpkg.com/ar-nft@2.4.0/build/threex-artoolkitcontroller.js"></script>
-    <script src="https://unpkg.com/ar-nft@2.4.0/build/threex-artoolkitsource.js"></script>
+    <title>Hong Kong Landmark AR (Fix Loading)</title>
+    <!-- 改用国内可访问的稳定CDN，避免加载超时 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/three.js/0.150.1/three.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/ar-nft/2.4.0/threex-artoolkitcore.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/ar-nft/2.4.0/threex-artoolkitcontroller.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/ar-nft/2.4.0/threex-artoolkitsource.js"></script>
     <style>
         body { margin: 0; overflow: hidden; }
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: Arial, sans-serif;
-            color: #333;
-        }
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: Arial, sans-serif; color: #333; }
+        #error { position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); font-family: Arial, sans-serif; color: #e74c3c; font-size: 14px; display: none; }
     </style>
 </head>
 <body>
     <div id="loading">Loading AR Scene...<br>Please allow camera permission</div>
+    <div id="error" id="errorMsg"></div> <!-- 错误提示，卡住时显示原因 -->
 
     <script>
-        // Three.js Core: Basic 3D Scene Setup
+        // 全局错误监听（卡住时显示原因）
+        window.addEventListener('error', function(e) {
+            document.getElementById('loading').style.color = '#e74c3c';
+            document.getElementById('errorMsg').innerText = 'Error: ' + e.message;
+            document.getElementById('error').style.display = 'block';
+        });
+
+        // Three.js Core: 简化初始化
         const scene = new THREE.Scene();  
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // AR.js Core: 视频源配置
-        const arSource = new THREEx.ArToolkitSource({
-            sourceType: 'webcam',
-            sourceWidth: window.innerWidth,
-            sourceHeight: window.innerHeight
-        });
+        // 🔥 修复1：优化AR视频源初始化（兼容更多设备）
+        let arSource, arController;
+        try {
+            arSource = new THREEx.ArToolkitSource({
+                sourceType: 'webcam',
+                sourceWidth: window.innerWidth,
+                sourceHeight: window.innerHeight,
+                // 增加摄像头适配参数
+                sourceWidthMin: 640,
+                sourceHeightMin: 480
+            });
+        } catch (e) {
+            document.getElementById('errorMsg').innerText = 'Camera init failed: ' + e.message;
+            document.getElementById('error').style.display = 'block';
+        }
+
+        // 窗口适配（简化逻辑）
         window.addEventListener('resize', function() {
-            arSource.onResize();
-            arSource.copySizeTo(renderer.domElement);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-        });
-        arSource.init(function() {
-            arSource.copySizeTo(renderer.domElement);
+            if (arSource) arSource.onResize();
+            if (arSource) arSource.copySizeTo(renderer.domElement);
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
         });
 
-        // 🔥 本地标记配置（引用同一文件夹的.patt文件）
-        const arController = new THREEx.ArToolkitController({
-            camera: camera,
-            renderer: renderer,
-            markerPatternUrl: './marker.patt', // 本地路径，确保.patt和HTML同文件夹
-            detectionMode: 'mono_and_matrix',
-            matrixCodeType: '3x3',
-            threshold: 120
-        });
-        arController.addEventListener('ready', function() {
-            document.getElementById('loading').style.display = 'none';
-        });
-        arController.start();
-        scene.add(arController.object3d);
+        // 🔥 修复2：异步初始化，避免阻塞
+        if (arSource) {
+            arSource.init(function(err) {
+                if (err) {
+                    document.getElementById('errorMsg').innerText = 'AR source init failed: ' + err.message;
+                    document.getElementById('error').style.display = 'block';
+                    return;
+                }
+                arSource.copySizeTo(renderer.domElement);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
 
-        // 学生修改部分：香港地标3D模型（简化版香港会展中心）
+                // 本地标记配置（确保路径正确）
+                try {
+                    arController = new THREEx.ArToolkitController({
+                        camera: camera,
+                        renderer: renderer,
+                        markerPatternUrl: './marker.patt', // 重点：本地路径
+                        detectionMode: 'mono', // 简化识别模式，提高兼容性
+                        threshold: 150, // 调整阈值，适配普通打印机
+                        maxDetectionRate: 30, // 降低检测速率，减少卡顿
+                    });
+
+                    // 初始化成功/失败监听
+                    arController.addEventListener('ready', function() {
+                        document.getElementById('loading').style.display = 'none'; // 加载完成，隐藏提示
+                    });
+
+                    arController.addEventListener('error', function(err) {
+                        document.getElementById('errorMsg').innerText = 'AR controller error: ' + err.message;
+                        document.getElementById('error').style.display = 'block';
+                    });
+
+                    arController.start();
+                    scene.add(arController.object3d);
+                } catch (e) {
+                    document.getElementById('errorMsg').innerText = 'AR controller init failed: ' + e.message;
+                    document.getElementById('error').style.display = 'block';
+                }
+            });
+        }
+
+        // 学生修改部分：香港地标3D模型（简化代码，避免阻塞）
         const mainBuilding = new THREE.Mesh(
             new THREE.BoxGeometry(2, 1.5, 1),
             new THREE.MeshBasicMaterial({ color: 0xe74c3c })
@@ -81,31 +116,24 @@
         const hkcecModel = new THREE.Group();
         hkcecModel.add(mainBuilding);
         hkcecModel.add(topPart);
-        arController.object3d.add(hkcecModel);
+        if (arController) arController.object3d.add(hkcecModel);
 
-        // 选做交互：点击模型变色
-        renderer.domElement.addEventListener('click', function() {
-            const randomColor = Math.random() * 0xffffff;
-            mainBuilding.material.color.set(randomColor);
-            topPart.material.color.set(randomColor * 0.8);
-        });
-
-        // 自动旋转
+        // 简化渲染逻辑（避免死循环阻塞）
         function animate() {
             requestAnimationFrame(animate);
-            if (hkcecModel) {
-                hkcecModel.rotation.y += 0.005;
-            }
+            if (hkcecModel) hkcecModel.rotation.y += 0.005;
             if (arController && arController.update) {
-                arController.update(arSource.domElement);
+                try {
+                    arController.update(arSource ? arSource.domElement : null);
+                } catch (e) {}
             }
             renderer.render(scene, camera);
         }
         animate();
 
-        console.log('Local AR Project - Tips:');
-        console.log('1. Ensure marker.patt and marker.png are in the same folder as HTML');
-        console.log('2. Print marker.png at 100% scale');
+        console.log('AR Project - Debug Info:');
+        console.log('File path check: Ensure marker.patt is in the same folder as HTML');
+        console.log('Camera permission: Check browser settings');
     </script>
 </body>
 </html>
