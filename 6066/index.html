@@ -41,11 +41,9 @@
         <div id="landmark-text">尖沙咀鐘樓</div>
          <a-marker type="pattern" url="./marker.patt">
             <!-- 关联加载的3D模型 -->
-            <!-- 注意：真实模型可能很大，需缩小（根据模型尺寸调整） -->
             <a-entity
                 id="landmark-model"
                 gltf-model="#landmarkModel" 
-                scale="0.1 0.1 0.1"
                 position="0 0 0"
                 animation="property: rotation; to: 0 360 0; dur: 5000; repeat: Infinity"
             >
@@ -72,15 +70,25 @@
         document.addEventListener('DOMContentLoaded', () => {
             const model = document.querySelector('#landmark-model');
             const textOverlay = document.getElementById('landmark-text');
+            const loading = document.getElementById('loading');
+            const glbModel = document.querySelector('#landmarkModel');
+
+            glbModel.addEventListener('loaded', () => {
+                textOverlay.style.display = 'block'; // 显示文字
+                loading.style.display = 'none'; // 隐藏加载提示
+            });
 
             // 关键逻辑：识别到标记 → 显示文字；丢失标记 → 隐藏文字
             marker.addEventListener('markerFound', () => {
                 textOverlay.style.display = 'block'; // 显示文字
+                loading.style.display = 'none'; // 隐藏加载提示
             });
+
+
 
             marker.addEventListener('markerLost', () => {
                 textOverlay.style.display = 'none'; // 隐藏文字
-                console.log('⚠️ 丢失 AR 标记，文字已隐藏');
+                loading.style.display = 'none'; // 隐藏加载提示
             });
             
         });
