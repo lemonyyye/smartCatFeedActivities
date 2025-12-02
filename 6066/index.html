@@ -39,21 +39,20 @@
             sourceType: webcam; 
         "
     >
-        <div id="landmark-text">香港地标：天坛大佛<br>海拔520米，世界最大户外青铜坐佛</div>
-        <!-- 图像标记：关联香港地标（替换为课堂用标记路径） -->
-        <a-marker type="pattern" url="./marker.patt">
-            <!-- 3D模型：默认加载示例立方体（学生可替换为香港地标模型） -->
+        <div id="landmark-text">尖沙咀鐘樓</div>
+         <a-marker type="pattern" url="./marker.patt">
+            <!-- 关联加载的3D模型 -->
+            <!-- 注意：真实模型可能很大，需缩小（根据模型尺寸调整） -->
             <a-entity
                 id="landmark-model"
-                geometry="primitive: box; width: 1; height: 1; depth: 1"  
-                material="color: #ff6b6b; opacity: 0.8" 
-                scale="0.3 0.3 0.3"
+                gltf-model="#hk-landmark-model" 
+                scale="0.1 0.1 0.1"
                 position="0 0 0"
-                animation="property: rotation; to: 0 360 0; dur: 3000; repeat: Infinity; ease: linear"
+                animation="property: rotation; to: 0 360 0; dur: 5000; repeat: Infinity"
             >
                 <!-- 地标文字介绍 -->
                 <a-text 
-                    value="香港地标：天坛大佛" 
+                    value="尖沙咀鐘樓" 
                     color="#58bc58" 
                     scale="3 3 3" 
                     position="0 1 0" 
@@ -62,7 +61,9 @@
                 ></a-text>
             </a-entity>
         </a-marker>
-
+        <a-assets>
+            <a-asset-item id="landmarkModel" src="assets/model/landmark.glb" onload="document.getElementById('loading').style.display='none'"></a-asset-item>
+        </a-assets>
         <!-- 相机：必选组件（模拟人眼视角） -->
         <a-entity camera></a-entity>
     </a-scene>
