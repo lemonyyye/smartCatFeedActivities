@@ -21,12 +21,11 @@
             font-size: 18px;
             font-weight: bold;
             z-index: 9999; /* 最上层显示，不被摄像头画面遮挡 */
-            
         }
-
     </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
+    <div class="loading" id="loading">加载中... 请扫描AR标记后，不要乱动</div>
     <!-- AR场景核心容器 -->
     <!-- 适配课堂A4纸质标记 -->
     <!-- 启用设备摄像头 -->
@@ -45,7 +44,7 @@
             <!-- 注意：真实模型可能很大，需缩小（根据模型尺寸调整） -->
             <a-entity
                 id="landmark-model"
-                gltf-model="#hk-landmark-model" 
+                gltf-model="#landmarkModel" 
                 scale="0.1 0.1 0.1"
                 position="0 0 0"
                 animation="property: rotation; to: 0 360 0; dur: 5000; repeat: Infinity"
@@ -62,7 +61,7 @@
             </a-entity>
         </a-marker>
         <a-assets>
-            <a-asset-item id="landmarkModel" src="assets/model/landmark.glb" onload="document.getElementById('loading').style.display='none'"></a-asset-item>
+            <a-asset-item id="landmarkModel" src="./assets/model/landmark.glb" onload="document.getElementById('loading').style.display='none'"></a-asset-item>
         </a-assets>
         <!-- 相机：必选组件（模拟人眼视角） -->
         <a-entity camera></a-entity>
