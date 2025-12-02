@@ -8,8 +8,26 @@
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
     <script src="https://unpkg.com/three/build/three.min.js"></script>
     <script src="https://unpkg.com/@ar-js-org/ar.js@latest/aframe/build/aframe-ar-nft.js"></script>
+    <style>
+        #landmark-text {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8); /* 黑色半透明背景 */
+            color: white; /* 白色文字 */
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 9999; /* 最上层显示，不被摄像头画面遮挡 */
+            display: none; /* 初始隐藏，识别到标记后显示 */
+        }
+
+    </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
+    <div id="landmark-text">香港地标：天坛大佛<br>海拔520米，世界最大户外青铜坐佛</div>
     <!-- AR场景核心容器 -->
     <!-- 适配课堂A4纸质标记 -->
     <!-- 启用设备摄像头 -->
@@ -53,15 +71,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const model = document.querySelector('#landmark-model');
-            const text = document.querySelector('#landmark-text');
+            const textOverlay = document.getElementById('landmark-text');
 
-            // 点击模型切换文字显示/隐藏
-            model.addEventListener('click', () => {
-                text.setAttribute('visible', !text.getAttribute('visible'));
+            // 关键逻辑：识别到标记 → 显示文字；丢失标记 → 隐藏文字
+            marker.addEventListener('markerFound', () => {
+                textOverlay.style.display = 'block'; // 显示文字
             });
 
-            // 加载成功提示（控制台查看）
-            console.log('✅ AR导览项目加载完成！请对准图像标记');
+            
         });
     </script>
 </body>
