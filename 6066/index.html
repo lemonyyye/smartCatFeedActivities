@@ -1,139 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hong Kong Landmark AR (Fix Loading)</title>
-    <!-- 改用国内可访问的稳定CDN，避免加载超时 -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/three.js/0.150.1/three.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/ar-nft/2.4.0/threex-artoolkitcore.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/ar-nft/2.4.0/threex-artoolkitcontroller.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/ar-nft/2.4.0/threex-artoolkitsource.js"></script>
-    <style>
-        body { margin: 0; overflow: hidden; }
-        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: Arial, sans-serif; color: #333; }
-        #error { position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); font-family: Arial, sans-serif; color: #e74c3c; font-size: 14px; display: none; }
-    </style>
+    <title>香港地标AR导览 - 课堂演示版</title>
+    <!-- 在线依赖：顺序不可乱（A-Frame → Three.js → AR.js） -->
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/three/build/three.min.js"></script>
+    <script src="https://unpkg.com/@ar-js-org/ar.js@latest/aframe/build/aframe-ar-nft.js"></script>
 </head>
-<body>
-    <div id="loading">Loading AR Scene...<br>Please allow camera permission</div>
-    <div id="error" id="errorMsg"></div> <!-- 错误提示，卡住时显示原因 -->
+<body style="margin: 0; overflow: hidden;">
+    <!-- AR场景核心容器 -->
+    <!-- 适配课堂A4纸质标记 -->
+    <!-- 启用设备摄像头 -->
+    <a-scene
+        vr-mode-ui="enabled: false;"  
+        arjs="
+            trackingMethod: best; 
+            detectionMode: mono_and_matrix; 
+            matrixCodeType: 3x3; 
+            sourceType: webcam; 
+        "
+    >
+        <!-- 图像标记：关联香港地标（替换为课堂用标记路径） -->
+        <a-marker type="pattern" url="./marker.patt">
+            <!-- 3D模型：默认加载示例立方体（学生可替换为香港地标模型） -->
+            <a-entity
+                id="landmark-model"
+                geometry="primitive: box; width: 1; height: 1; depth: 1"  
+                material="color: #ff6b6b; opacity: 0.8" 
+                scale="0.3 0.3 0.3"
+                position="0 0 0"
+            >
+                <!-- 地标文字介绍 -->
+                <a-text 
+                    value="香港地标：天坛大佛" 
+                    color="#000" 
+                    scale="1.5 1.5 1.5" 
+                    position="0 0.5 0" 
+                    visible="false"
+                    id="landmark-text"
+                ></a-text>
+            </a-entity>
+        </a-marker>
 
+        <!-- 相机：必选组件（模拟人眼视角） -->
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- 交互脚本：点击模型显示介绍 -->
     <script>
-        // 全局错误监听（卡住时显示原因）
-        window.addEventListener('error', function(e) {
-            document.getElementById('loading').style.color = '#e74c3c';
-            document.getElementById('errorMsg').innerText = 'Error: ' + e.message;
-            document.getElementById('error').style.display = 'block';
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const model = document.querySelector('#landmark-model');
+            const text = document.querySelector('#landmark-text');
 
-        // Three.js Core: 简化初始化
-        const scene = new THREE.Scene();  
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // 🔥 修复1：优化AR视频源初始化（兼容更多设备）
-        let arSource, arController;
-        try {
-            arSource = new THREEx.ArToolkitSource({
-                sourceType: 'webcam',
-                sourceWidth: window.innerWidth,
-                sourceHeight: window.innerHeight,
-                // 增加摄像头适配参数
-                sourceWidthMin: 640,
-                sourceHeightMin: 480
+            // 点击模型切换文字显示/隐藏
+            model.addEventListener('click', () => {
+                text.setAttribute('visible', !text.getAttribute('visible'));
             });
-        } catch (e) {
-            document.getElementById('errorMsg').innerText = 'Camera init failed: ' + e.message;
-            document.getElementById('error').style.display = 'block';
-        }
 
-        // 窗口适配（简化逻辑）
-        window.addEventListener('resize', function() {
-            if (arSource) arSource.onResize();
-            if (arSource) arSource.copySizeTo(renderer.domElement);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
+            // 加载成功提示（控制台查看）
+            console.log('✅ AR导览项目加载完成！请对准图像标记');
         });
-
-        // 🔥 修复2：异步初始化，避免阻塞
-        if (arSource) {
-            arSource.init(function(err) {
-                if (err) {
-                    document.getElementById('errorMsg').innerText = 'AR source init failed: ' + err.message;
-                    document.getElementById('error').style.display = 'block';
-                    return;
-                }
-                arSource.copySizeTo(renderer.domElement);
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-
-                // 本地标记配置（确保路径正确）
-                try {
-                    arController = new THREEx.ArToolkitController({
-                        camera: camera,
-                        renderer: renderer,
-                        markerPatternUrl: './marker.patt', // 重点：本地路径
-                        detectionMode: 'mono', // 简化识别模式，提高兼容性
-                        threshold: 150, // 调整阈值，适配普通打印机
-                        maxDetectionRate: 30, // 降低检测速率，减少卡顿
-                    });
-
-                    // 初始化成功/失败监听
-                    arController.addEventListener('ready', function() {
-                        document.getElementById('loading').style.display = 'none'; // 加载完成，隐藏提示
-                    });
-
-                    arController.addEventListener('error', function(err) {
-                        document.getElementById('errorMsg').innerText = 'AR controller error: ' + err.message;
-                        document.getElementById('error').style.display = 'block';
-                    });
-
-                    arController.start();
-                    scene.add(arController.object3d);
-                } catch (e) {
-                    document.getElementById('errorMsg').innerText = 'AR controller init failed: ' + e.message;
-                    document.getElementById('error').style.display = 'block';
-                }
-            });
-        }
-
-        // 学生修改部分：香港地标3D模型（简化代码，避免阻塞）
-        const mainBuilding = new THREE.Mesh(
-            new THREE.BoxGeometry(2, 1.5, 1),
-            new THREE.MeshBasicMaterial({ color: 0xe74c3c })
-        );
-        mainBuilding.position.y = 0.75;
-
-        const topPart = new THREE.Mesh(
-            new THREE.BoxGeometry(2.2, 0.3, 1.2),
-            new THREE.MeshBasicMaterial({ color: 0x3498db })
-        );
-        topPart.position.y = 2.25;
-
-        const hkcecModel = new THREE.Group();
-        hkcecModel.add(mainBuilding);
-        hkcecModel.add(topPart);
-        if (arController) arController.object3d.add(hkcecModel);
-
-        // 简化渲染逻辑（避免死循环阻塞）
-        function animate() {
-            requestAnimationFrame(animate);
-            if (hkcecModel) hkcecModel.rotation.y += 0.005;
-            if (arController && arController.update) {
-                try {
-                    arController.update(arSource ? arSource.domElement : null);
-                } catch (e) {}
-            }
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        console.log('AR Project - Debug Info:');
-        console.log('File path check: Ensure marker.patt is in the same folder as HTML');
-        console.log('Camera permission: Check browser settings');
     </script>
 </body>
 </html>
