@@ -3,81 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hong Kong Landmark AR</title>
-    <!-- 引入Three.js（3D场景核心库） -->
+    <title>Hong Kong Landmark AR (Student Version)</title>
+    <!-- 引入依赖库（CDN加载，无需本地下载） -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-    <!-- 引入AR.js（AR识别核心库，依赖A-Frame） -->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-    <!-- 引入AR.js辅助工具（简化标记识别） -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/threex-artoolkitcore.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/threex-artoolkitcontroller.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/threex-artoolkitsource.js"></script>
+    <style>
+        /* 隐藏页面边距，让AR画面全屏 */
+        body { margin: 0; overflow: hidden; }
+        /* 加载提示（避免学生误以为白屏） */
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+    </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    <!-- AR场景容器：配置摄像头、识别模式 -->
-    <a-scene 
-        arjs="trackingMethod: best; sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
-        renderer="antialias: true; alpha: true"
-    >
-        <!-- 图像标记（预设HIRO标记，无需自定义，可直接打印测试） -->
-        <a-marker preset="hiro" id="landmarkMarker">
-            <!-- 香港地标3D模型：用立方体模拟（可替换为真实模型URL） -->
-            <!-- 示例1：香港会展中心（简化立方体，红色主体+蓝色顶部） -->
-            <a-group position="0 0 0">
-                <!-- 主体建筑 -->
-                <a-box 
-                    position="0 1 0" 
-                    rotation="0 0 0" 
-                    width="2" 
-                    height="1.5" 
-                    depth="1" 
-                    color="#E74C3C"
-                ></a-box>
-                <!-- 顶部标志性结构 -->
-                <a-box 
-                    position="0 2.25 0" 
-                    rotation="0 0 0" 
-                    width="2.2" 
-                    height="0.3" 
-                    depth="1.2" 
-                    color="#3498DB"
-                ></a-box>
-                <!-- 交互提示文本（点击模型显示） -->
-                <a-text 
-                    value="Hong Kong Convention and Exhibition Centre" 
-                    position="0 3 0" 
-                    rotation="-90 0 0" 
-                    scale="1 1 1" 
-                    color="#000"
-                    opacity="0"
-                    id="landmarkText"
-                ></a-text>
-            </a-group>
-        </a-marker>
+<body>
+    <div id="loading">Loading AR Scene...<br>Please allow camera permission</div>
 
-        <!-- 相机：绑定用户视角 -->
-        <a-entity camera look-controls></a-entity>
-    </a-scene>
-
-    <!-- 交互脚本：点击模型显示文本 -->
     <script>
-        // 等待AR场景加载完成
-        document.addEventListener('DOMContentLoaded', function() {
-            const marker = document.getElementById('landmarkMarker');
-            const landmarkText = document.getElementById('landmarkText');
-            let isTextVisible = false;
+        // Three.js Core: Basic 3D Scene Setup
+        // 1.Scene
+        const scene = new THREE.Scene();  
+        // 2.Camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        // 3.Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true }); // 抗锯齿，画面更清晰
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-            // 点击模型切换文本显示/隐藏
-            marker.addEventListener('click', function() {
-                isTextVisible = !isTextVisible;
-                landmarkText.setAttribute('opacity', isTextVisible ? 1 : 0);
-            });
-
-            // 初始化提示：控制台打印使用说明
-            console.log('AR Hong Kong Landmark - Usage:');
-            console.log('1. Print the HIRO marker (search "AR.js HIRO marker" to download)');
-            console.log('2. Point your phone/PC camera at the marker');
-            console.log('3. Click the 3D model to show/hide landmark name');
+        // AR.js Core: 视频源配置（解决摄像头访问问题）
+        const arSource = new THREEx.ArToolkitSource({
+            sourceType: 'webcam', // 用摄像头作为输入源
+            sourceWidth: window.innerWidth,
+            sourceHeight: window.innerHeight
         });
+        // 监听窗口大小变化，自动适配
+        window.addEventListener('resize', function() {
+            arSource.onResize();
+            arSource.copySizeTo(renderer.domElement);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+        arSource.init(function() {
+            arSource.copySizeTo(renderer.domElement);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        // AR.js Core: Bind Marker & 3D Scene（使用HIRO通用标记，无需学生准备文件）
+        const arController = new THREEx.ArToolkitController({
+            camera: camera,
+            renderer: renderer,
+            markerPatternUrl: THREEx.ArToolkitContext.baseURL + 'data/patt.hiro', // 自带HIRO标记路径
+            detectionMode: 'mono_and_matrix', // 优化识别精度
+            matrixCodeType: '3x3',
+            threshold: 120 // 识别阈值，适配不同光线
+        });
+        arController.addEventListener('ready', function() {
+            document.getElementById('loading').style.display = 'none'; // 加载完成，隐藏提示
+        });
+        arController.start(); // Start AR tracking
+        scene.add(arController.object3d); // Link AR to 3D scene
+
+        // 学生修改部分：香港地标3D模型（核心个性化区域）
+        // 模型几何形状（立方体，可替换为球形/圆柱体）
+        const landmarkGeometry = new THREE.BoxGeometry(1.2, 1.8, 1.2); // 宽, 高, 深（0.5-2之间调整）
+        // 模型材质（颜色/样式）
+        const landmarkMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x3498db, // 模型颜色（可改为0xffd700金色/0x2ecc71绿色）
+            wireframe: false, // false=实心，true=线框（可选）
+            transparent: false, // 是否透明
+            opacity: 1 // 透明度（0-1）
+        });
+        const myLandmark = new THREE.Mesh(landmarkGeometry, landmarkMaterial);
+
+        // 模型位置&旋转调整（确保在标记上方，不贴地/不偏移）
+        myLandmark.position.y = 0.9; // 上下移动（数值越大越靠上，建议0.7-1之间）
+        myLandmark.rotation.y = 1.5; // 旋转角度（0-6之间，对应0-360度）
+        myLandmark.rotation.x = 0.1; // 轻微倾斜，更有立体感（可选）
+
+        // 将模型添加到AR标记中（固定代码，无需修改）
+        arController.object3d.add(myLandmark);
+
+        // 选做交互：点击模型变色（学生可保留/删除）
+        renderer.domElement.addEventListener('click', function() {
+            const randomColor = Math.random() * 0xffffff; // 随机生成颜色
+            myLandmark.material.color.set(randomColor);
+        });
+
+        // 选做功能：模型自动旋转（学生可保留/删除，注释掉即可关闭）
+        function animate() {
+            requestAnimationFrame(animate);
+            if (myLandmark) {
+                myLandmark.rotation.y += 0.005; // 旋转速度（数值越小越慢）
+            }
+            // 实时渲染场景
+            if (arController && arController.update) {
+                arController.update(arSource.domElement);
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // 控制台提示（帮助学生排查问题）
+        console.log('Student AR Project - Tips:');
+        console.log('1. Print HIRO marker: https://ar-js-org.github.io/AR.js-Docs/hiro.png');
+        console.log('2. Modify landmarkGeometry/color/rotation to customize your model');
+        console.log('3. Click the model to change color');
     </script>
 </body>
 </html>
