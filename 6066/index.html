@@ -21,13 +21,12 @@
             font-size: 18px;
             font-weight: bold;
             z-index: 9999; /* 最上层显示，不被摄像头画面遮挡 */
-            display: none; /* 初始隐藏，识别到标记后显示 */
+            
         }
 
     </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <div id="landmark-text">香港地标：天坛大佛<br>海拔520米，世界最大户外青铜坐佛</div>
     <!-- AR场景核心容器 -->
     <!-- 适配课堂A4纸质标记 -->
     <!-- 启用设备摄像头 -->
@@ -40,6 +39,7 @@
             sourceType: webcam; 
         "
     >
+        <div id="landmark-text">香港地标：天坛大佛<br>海拔520米，世界最大户外青铜坐佛</div>
         <!-- 图像标记：关联香港地标（替换为课堂用标记路径） -->
         <a-marker type="pattern" url="./marker.patt">
             <!-- 3D模型：默认加载示例立方体（学生可替换为香港地标模型） -->
