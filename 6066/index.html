@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>香港地标AR导览</title>
+    <!-- 引入AR.js和Three.js依赖（CDN直接加载，无需本地部署libs文件夹） -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <style>
+        /* 页面基础样式：隐藏多余元素，优化手机显示 */
+        body { margin: 0; padding: 0; overflow: hidden; background: #000; }
+        .loading { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: white; font-size: 18px; text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载提示（模型加载完成前显示） -->
+    <div class="loading" id="loading">加载中... 请稍后扫描AR标记</div>
+
+    <!-- AR场景核心：配置标记尺寸、摄像头参数 -->
+    <a-scene 
+        arjs="trackingMethod: best; sourceType: webcam; markerSize: 0.297; detectionMode: mono_and_matrix;"
+        vr-mode-ui="enabled: false"  <!-- 隐藏VR模式按钮（AR场景无需） -->
+        loading-screen="enabled: false">
+
+        <!-- 自定义AR标记：替换为你的香港地标标记图 -->
+        <a-marker type="pattern" url="assets/marker.png" id="landmarkMarker">
+            <!-- 香港地标3D模型：挂载到标记上，可调整缩放/位置/旋转 -->
+            <a-entity 
+                gltf-model="#landmarkModel" 
+                scale="0.1 0.1 0.1"  <!-- 模型缩放（根据实际模型调整） -->
+                position="0 0 0"     <!-- 模型在标记上的位置（X/Y/Z） -->
+                rotation="0 0 0"     <!-- 模型初始角度 -->
+                animation="property: rotation; to: 0 360 0; dur: 10000; repeat: indefinite;">
+            </a-entity>
+        </a-marker>
+
+        <!-- 模型资源预加载：替换为你的3D模型路径 -->
+        <a-assets>
+            <a-asset-item 
+                id="landmarkModel" 
+                src="assets/model/landmark.glb"  <!-- 你的香港地标3D模型（GLB格式） -->
+                onload="document.getElementById('loading').style.display='none'">
+            </a-asset-item>
+        </a-assets>
+    </a-scene>
+
+    <!-- 错误处理：提示浏览器兼容性 -->
+    <script>
+        // 检测是否支持摄像头（AR核心依赖）
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .catch(err => {
+                alert("请允许摄像头权限！AR功能需要摄像头访问权限，建议使用Chrome/Safari浏览器。");
+                console.error("摄像头权限错误：", err);
+            });
+
+        // 标记识别状态提示
+        document.getElementById('landmarkMarker').addEventListener('markerFound', () => {
+            console.log("AR标记识别成功！模型已显示");
+        });
+        document.getElementById('landmarkMarker').addEventListener('markerLost', () => {
+            console.log("AR标记已丢失，请重新对准");
+        });
+    </script>
+</body>
+</html>
