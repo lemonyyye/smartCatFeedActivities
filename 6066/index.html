@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hong Kong Landmark AR (Student Version)</title>
-    <!-- 引入依赖库（CDN加载，无需本地下载） -->
+    <title>Hong Kong Landmark AR (Local Marker Version)</title>
+    <!-- 稳定版依赖库（国内可访问） -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/threex-artoolkitcore.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/threex-artoolkitcontroller.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/threex-artoolkitsource.js"></script>
+    <script src="https://unpkg.com/ar-nft@2.4.0/build/threex-artoolkitcore.js"></script>
+    <script src="https://unpkg.com/ar-nft@2.4.0/build/threex-artoolkitcontroller.js"></script>
+    <script src="https://unpkg.com/ar-nft@2.4.0/build/threex-artoolkitsource.js"></script>
     <style>
-        /* 隐藏页面边距，让AR画面全屏 */
         body { margin: 0; overflow: hidden; }
-        /* 加载提示（避免学生误以为白屏） */
         #loading {
             position: absolute;
             top: 50%;
@@ -28,22 +26,18 @@
 
     <script>
         // Three.js Core: Basic 3D Scene Setup
-        // 1.Scene
         const scene = new THREE.Scene();  
-        // 2.Camera
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        // 3.Renderer
-        const renderer = new THREE.WebGLRenderer({ antialias: true }); // 抗锯齿，画面更清晰
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // AR.js Core: 视频源配置（解决摄像头访问问题）
+        // AR.js Core: 视频源配置
         const arSource = new THREEx.ArToolkitSource({
-            sourceType: 'webcam', // 用摄像头作为输入源
+            sourceType: 'webcam',
             sourceWidth: window.innerWidth,
             sourceHeight: window.innerHeight
         });
-        // 监听窗口大小变化，自动适配
         window.addEventListener('resize', function() {
             arSource.onResize();
             arSource.copySizeTo(renderer.domElement);
@@ -56,54 +50,52 @@
             camera.updateProjectionMatrix();
         });
 
-        // AR.js Core: Bind Marker & 3D Scene（使用HIRO通用标记，无需学生准备文件）
+        // 🔥 本地标记配置（引用同一文件夹的.patt文件）
         const arController = new THREEx.ArToolkitController({
             camera: camera,
             renderer: renderer,
-            markerPatternUrl: THREEx.ArToolkitContext.baseURL + 'data/patt.hiro', // 自带HIRO标记路径
-            detectionMode: 'mono_and_matrix', // 优化识别精度
+            markerPatternUrl: './marker.patt', // 本地路径，确保.patt和HTML同文件夹
+            detectionMode: 'mono_and_matrix',
             matrixCodeType: '3x3',
-            threshold: 120 // 识别阈值，适配不同光线
+            threshold: 120
         });
         arController.addEventListener('ready', function() {
-            document.getElementById('loading').style.display = 'none'; // 加载完成，隐藏提示
+            document.getElementById('loading').style.display = 'none';
         });
-        arController.start(); // Start AR tracking
-        scene.add(arController.object3d); // Link AR to 3D scene
+        arController.start();
+        scene.add(arController.object3d);
 
-        // 学生修改部分：香港地标3D模型（核心个性化区域）
-        // 模型几何形状（立方体，可替换为球形/圆柱体）
-        const landmarkGeometry = new THREE.BoxGeometry(1.2, 1.8, 1.2); // 宽, 高, 深（0.5-2之间调整）
-        // 模型材质（颜色/样式）
-        const landmarkMaterial = new THREE.MeshBasicMaterial({ 
-            color: 0x3498db, // 模型颜色（可改为0xffd700金色/0x2ecc71绿色）
-            wireframe: false, // false=实心，true=线框（可选）
-            transparent: false, // 是否透明
-            opacity: 1 // 透明度（0-1）
-        });
-        const myLandmark = new THREE.Mesh(landmarkGeometry, landmarkMaterial);
+        // 学生修改部分：香港地标3D模型（简化版香港会展中心）
+        const mainBuilding = new THREE.Mesh(
+            new THREE.BoxGeometry(2, 1.5, 1),
+            new THREE.MeshBasicMaterial({ color: 0xe74c3c })
+        );
+        mainBuilding.position.y = 0.75;
 
-        // 模型位置&旋转调整（确保在标记上方，不贴地/不偏移）
-        myLandmark.position.y = 0.9; // 上下移动（数值越大越靠上，建议0.7-1之间）
-        myLandmark.rotation.y = 1.5; // 旋转角度（0-6之间，对应0-360度）
-        myLandmark.rotation.x = 0.1; // 轻微倾斜，更有立体感（可选）
+        const topPart = new THREE.Mesh(
+            new THREE.BoxGeometry(2.2, 0.3, 1.2),
+            new THREE.MeshBasicMaterial({ color: 0x3498db })
+        );
+        topPart.position.y = 2.25;
 
-        // 将模型添加到AR标记中（固定代码，无需修改）
-        arController.object3d.add(myLandmark);
+        const hkcecModel = new THREE.Group();
+        hkcecModel.add(mainBuilding);
+        hkcecModel.add(topPart);
+        arController.object3d.add(hkcecModel);
 
-        // 选做交互：点击模型变色（学生可保留/删除）
+        // 选做交互：点击模型变色
         renderer.domElement.addEventListener('click', function() {
-            const randomColor = Math.random() * 0xffffff; // 随机生成颜色
-            myLandmark.material.color.set(randomColor);
+            const randomColor = Math.random() * 0xffffff;
+            mainBuilding.material.color.set(randomColor);
+            topPart.material.color.set(randomColor * 0.8);
         });
 
-        // 选做功能：模型自动旋转（学生可保留/删除，注释掉即可关闭）
+        // 自动旋转
         function animate() {
             requestAnimationFrame(animate);
-            if (myLandmark) {
-                myLandmark.rotation.y += 0.005; // 旋转速度（数值越小越慢）
+            if (hkcecModel) {
+                hkcecModel.rotation.y += 0.005;
             }
-            // 实时渲染场景
             if (arController && arController.update) {
                 arController.update(arSource.domElement);
             }
@@ -111,11 +103,9 @@
         }
         animate();
 
-        // 控制台提示（帮助学生排查问题）
-        console.log('Student AR Project - Tips:');
-        console.log('1. Print HIRO marker: https://ar-js-org.github.io/AR.js-Docs/hiro.png');
-        console.log('2. Modify landmarkGeometry/color/rotation to customize your model');
-        console.log('3. Click the model to change color');
+        console.log('Local AR Project - Tips:');
+        console.log('1. Ensure marker.patt and marker.png are in the same folder as HTML');
+        console.log('2. Print marker.png at 100% scale');
     </script>
 </body>
 </html>
